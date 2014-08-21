@@ -6,7 +6,7 @@
 set -u
 
 ### Variables ###
-sample='LV-89-02-trimmed-unmapped'
+sample='K5BB-trimmed-unmapped'
 reads='../data/trimmed-unmapped/'$sample'.fa'
 refseq=(`find ../data/refseq/*.fasta -type f`)
 nsplit=16

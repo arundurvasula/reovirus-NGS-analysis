@@ -6,8 +6,8 @@
 set -u
 
 ### Variables ###
-sample='LV-89-02-trimmed-unmapped'
-reads='../data/trimmed-unmapped/'$sample'.fa'
+sample='LV-89-15-trimmed-unmapped'
+reads='../data/trimmed-unmapped/LV89_1-1.fa'
 refseq=(`find ../data/refseq/*.fasta -type f`)
 nsplit=16
 blast_threads=2
@@ -16,22 +16,22 @@ blast_threads=2
 echo '##########################'
 echo '### Assembling '$sample' ###'
 echo '##########################'
-idba_ud -r $reads -o ../results/$sample/contigs/ --mink 29 --maxk 49 --step 2
+#idba_ud -r $reads -o ../results/$sample/contigs/ --mink 29 --maxk 49 --step 2
 
 ## 2. Blast the resulting contigs
 echo '################################'
 echo '### Running BLAST on '$sample' ###'
 echo '################################'
-cp ../results/$sample/contigs/contig.fa ../temp/$sample/
-pyfasta split -n $nsplit ../temp/$sample/contig.fa
-contigs=(`find ../temp/$sample/contig.??.fa -type f`)
-for file in ${contigs[@]}
-do
-    filename=${file##*/}
-    time blastx -db nr -query $file -evalue 10 -matrix 'BLOSUM62' -word_size 3 -gapopen 11 -gapextend 1 -max_target_seqs 3 -outfmt "10 qseqid qlen sseqid evalue bitscore sskingdoms stitle sblastnames salltitles scomnames sscblyinames" -out ../results/$sample/blast/$filename-blast.csv -num_threads $blast_threads -seg "yes" &
-done
-wait
-cat ../results/$sample/blast/contig.??.fa-blast.csv > ../results/$sample/blast/$sample-blast.csv
+#cp ../results/$sample/contigs/contig.fa ../temp/$sample/
+#pyfasta split -n $nsplit ../temp/$sample/contig.fa
+#contigs=(`find ../temp/$sample/contig.??.fa -type f`)
+#for file in ${contigs[@]}
+#do
+#    filename=${file##*/}
+#    time blastx -db nr -query $file -evalue 10 -matrix 'BLOSUM62' -word_size 3 -gapopen 11 -gapextend 1 -max_target_seqs 3 -outfmt "10 qseqid qlen sseqid evalue bitscore sskingdoms stitle sblastnames salltitles scomnames sscblyinames" -out ../results/$sample/blast/$filename-blast.csv -num_threads $blast_threads -seg "yes" &
+#done
+#wait
+#cat ../results/$sample/blast/contig.??.fa-blast.csv > ../results/$sample/blast/$sample-blast.csv
 
 ## 3. Generate a report from the contigs
 echo '#####################################'
